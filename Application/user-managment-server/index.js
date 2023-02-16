@@ -1,10 +1,10 @@
-const { request, response } = require('express');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const port = 5000;
 const secretKey = "somethingstrange";
 const bodyParser = require('body-parser')
-const sql = require('mysql')
+const sql = require('mysql');
+const { json } = require('body-parser');
 
 const app = express()
 var jsonParser = bodyParser.json()
@@ -52,6 +52,40 @@ app.post('/api/login/', jsonParser, (req, res) => {
     });
 })
 
+app.post('/api/data/', jsonParser, (req, res) => {
+    var query = "SELECT * FROM result WHERE prn = '" + req.body.prn + "'";
+    var con = sql.createConnection({
+        host: "localhost",
+        user: "teacher",
+        password: "teacher",
+        database: "college"
+    });
+    con.query(query, function (err, result) {
+        if (err) throw err;
+        if (typeof result === 'undefined') return res.send("Error")
+        if (result.length === 0) return res.send("No data available");
+        return res.send(result);
+    });
+    con.end();
+})
+
+app.post('/api/update/', jsonParser, (req, res) => {
+    var query = "UPDATE result set " + req.body.sub + " = " + req.body.mark + " where id = " + req.body.id;
+    var con = sql.createConnection({
+        host: "localhost",
+        user: "teacher",
+        password: "teacher",
+        database: "college"
+    });
+    con.query(query, function (err, result) {
+        if (err) throw err;
+        if (typeof result === 'undefined') return res.send("Error")
+        if (result.length === 0) return res.send("No data available");
+        return res.send("Successfully updated.");
+    });
+    con.end();
+})
+
 
 app.post('/api/profile/', jsonParser, verifyToken, (req, res) => {
     jwt.verify(req.token, secretKey, async (err, authData) => {
@@ -77,7 +111,7 @@ app.post('/api/profile/', jsonParser, verifyToken, (req, res) => {
                 });
                 con.end();
             }
-            else if(authData.user.role === 'Teacher'){
+            else if (authData.user.role === 'Teacher') {
                 var con = sql.createConnection({
                     host: "localhost",
                     user: "teacher",
@@ -94,7 +128,7 @@ app.post('/api/profile/', jsonParser, verifyToken, (req, res) => {
                 });
                 con.end();
             }
-            else if(authData.user.role === 'Admin'){
+            else if (authData.user.role === 'Admin') {
 
             }
         }

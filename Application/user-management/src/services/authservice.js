@@ -13,6 +13,21 @@ const login = (user) => {
         });
 };
 
+const getData = (prn) => {
+    return axios
+        .post(API_URL + "data", prn)
+        .then((response) => {
+            return response.data;
+        });
+};
+
+const updateData = (marks) => {
+    return axios.post(API_URL + "update", marks)
+    .then((response) => {
+        return response.data;
+    })
+}
+
 const verify = () => {
     const token = localStorage.getItem("TOKEN");
     return axios
@@ -25,7 +40,6 @@ const verify = () => {
             //   if (response.data.username) {
             //     localStorage.setItem("user", JSON.stringify(response.data));
             //   }
-            console.log(response.data.result);
             return response.data;
         });
 };
@@ -36,6 +50,8 @@ const logout = () => {
 };
 
 const AuthService = {
+    updateData,
+    getData,
     verify,
     login,
     logout,

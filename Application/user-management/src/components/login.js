@@ -16,26 +16,42 @@ function Login() {
         event.preventDefault()
         const entry = { email: email, password: password };
         setUserData([...userData, entry]);
-        console.log(userData);
-        console.log(entry)
         console.log("Form submitted")
         AuthService.login(entry).then(
             (response) => {
-                console.log(response.token);
-                AuthService.verify(response.token).then(
-                    (response)=>{
-                        console.log(response);
-                        navigate("/dashboard", {
-                            state: {
-                              response
-                            }
-                          });
-                        window.location.reload();
-                    },
-                    (error)=>{
-                        console.log("Error" + error);
-                    }
-                )
+                console.log(response.user.role)
+                if(response.user.role === 'Student'){
+                    AuthService.verify(response.token).then(
+                        (response)=>{
+                            console.log(response);
+                            navigate("/dashboard", {
+                                state: {
+                                  response
+                                }
+                              });
+                            window.location.reload();    
+                        },
+                        (error)=>{
+                            console.log("Error" + error);
+                        }
+                    )
+                } else{
+                    AuthService.verify(response.token).then(
+                        (response)=>{
+                            console.log(response);
+                            navigate("/dashboardT", {
+                                state: {
+                                  response
+                                }
+                              });
+                            window.location.reload();    
+                        },
+                        (error)=>{
+                            console.log("Error" + error);
+                        }
+                    )
+                }
+                
             },
             (error) => {
                 console.log("Error" + error);

@@ -3,14 +3,14 @@
 }
 
 .profile{
-    float: left;
-    margin: 40px;
+    float: right;
+    margin: 4px;
     padding: 8px;
     border: 1px solid black;
 }
 
 .my-top{
-    margin-top: 80px;
+    margin-top: 16px;
 }
 
 table, th, td {
