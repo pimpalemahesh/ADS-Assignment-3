@@ -1,0 +1,18 @@
+*{
+    margin: 40px;
+}
+
+.profile{
+    float: left;
+    margin: 40px;
+    padding: 8px;
+    border: 1px solid black;
+}
+
+.my-top{
+    margin-top: 80px;
+}
+
+table, th, td {
+    border:1px solid black;
+}
